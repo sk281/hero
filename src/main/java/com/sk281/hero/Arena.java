@@ -1,8 +1,12 @@
 package com.sk281.hero;
 
+import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.TextCharacter; // Import the TextCharacter class
+import com.googlecode.lanterna.TerminalPosition; // Import TerminalPosition
+import com.googlecode.lanterna.TerminalSize; // Import TerminalSize
+import com.googlecode.lanterna.TextColor; // Import TextColor
 import java.io.IOException;
 
 import static com.googlecode.lanterna.input.KeyType.*;
@@ -12,6 +16,7 @@ public class Arena {
     private int height;
     private Hero hero;
     public int loop = 0;
+
     // Constructor for Arena, initializing Hero within Arena
     public Arena(int width, int height) {
         this.width = width;
@@ -43,23 +48,26 @@ public class Arena {
             case ArrowRight -> newPosition = hero.moveRight();
             case Character -> {
                 if (key.getCharacter() == 'q') {
-                    loop = 1;
+                    loop = 1; // Exit loop when 'q' is pressed
                     return; // Exit method without moving the hero
                 }
             }
             case EOF -> {
-                loop = 1;
+                loop = 1; // Exit loop on EOF
                 return; // Exit method without moving the hero
             }
-            default -> {
-            }
+            default -> {}
         }
 
-        moveHero(newPosition);
+        moveHero(newPosition); // Move the hero after processing the key
     }
 
+    // Draws the arena floor and hero on the screen
+    public void draw(Screen screen) throws IOException {
+        TextGraphics graphics = screen.newTextGraphics(); // Create TextGraphics object
+        graphics.setBackgroundColor(TextColor.Factory.fromString("#336699")); // Set background color
+        graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(width, height), ' '); // Fill rectangle
 
-        public void draw(Screen screen) throws IOException {
-            hero.draw(screen);
-        }
+        hero.draw(screen); // Draw the hero
+    }
 }
