@@ -3,15 +3,13 @@ package com.sk281.hero;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.screen.Screen;
-import com.googlecode.lanterna.TextCharacter; // Import the TextCharacter class
 import com.googlecode.lanterna.TerminalPosition; // Import TerminalPosition
 import com.googlecode.lanterna.TerminalSize; // Import TerminalSize
 import com.googlecode.lanterna.TextColor; // Import TextColor
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.googlecode.lanterna.input.KeyType.*;
+import java.util.Random;
 
 public class Arena {
     private int width;
@@ -19,13 +17,17 @@ public class Arena {
     private Hero hero;
     public int loop = 0;
     private List<Wall> walls;
+    private List<Coin> coins;
+    private Monster monster ;
 
     // Constructor for Arena, initializing Hero within Arena
     public Arena(int width, int height) {
         this.width = width;
         this.height = height;
-        this.hero = new Hero(10, 10); // Initial position of hero
+        this.hero = new Hero(10, 10);
+        monster = new Monster(9,9);// Initial position of hero
         this.walls = createWalls();
+        this.coins = createCoins();
     }
 
     private List<Wall> createWalls() {
@@ -40,7 +42,14 @@ public class Arena {
         }
         return walls;
     }
-
+    private List<Coin> createCoins() {
+        Random random = new Random();
+        ArrayList<Coin> coins = new ArrayList<>();
+        for (int i = 0; i < 5; i++)
+            coins.add(new Coin(random.nextInt(width - 2) + 1,
+                    random.nextInt(height - 2) + 1));
+        return coins;
+    }
     // Check if a position is within the arena bounds and not colliding with walls
     // Check if a position is within the arena bounds and not colliding with walls
     // Check if a position is within the arena bounds and not colliding with walls
@@ -62,6 +71,16 @@ public class Arena {
         return true; // Valid move
     }
 
+    private void retrieveCoins() {
+        for (int i = 0; i < coins.size(); i++) {
+
+            if (coins.get(i).getPosition().equals(hero.getPosition())) {
+
+                coins.remove(i); // Remove the coin
+                break; // Exit after collecting one coin
+            }
+        }
+    }
 
 
     // Move the hero to a new position if it's within bounds
@@ -69,6 +88,8 @@ public class Arena {
         if (canHeroMove(newPosition)) {
             hero.setPosition(newPosition);
         }
+        retrieveCoins();
+        monster.move();
     }
 
     // Method to process keys to move hero
@@ -112,5 +133,10 @@ public class Arena {
         for (Wall wall : walls) {
             wall.draw(screen); // Draw each wall
         }
+        for (Coin coin : coins){
+            coin.draw(screen);
+        }
+
+        monster.draw(screen);
     }
 }
