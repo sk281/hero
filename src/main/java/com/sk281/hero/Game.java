@@ -5,6 +5,8 @@ import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
+import com.sk281.hero.Hero;
+import com.sk281.hero.Position;
 
 import java.io.IOException;
 
@@ -13,7 +15,6 @@ public class Game {
     private Hero hero; // Class field for the hero
     private boolean exitLoop = false; // Control variable for the game loop
 
-    // Constructor to initialize the game
     public Game() {
         try {
             // Initialize hero object at position (10, 10)
@@ -32,21 +33,21 @@ public class Game {
         }
     }
 
-    // Process the keys for moving the hero and exiting
     private void processKey(KeyStroke key) {
-        // Handle specific keys for hero movement
+        Position newPosition = hero.getPosition(); // Get the current position
+
         switch (key.getKeyType()) {
             case ArrowUp:
-                hero.moveUp(); // Move hero up
+                newPosition = hero.moveUp(); // Get new position after moving up
                 break;
             case ArrowDown:
-                hero.moveDown(); // Move hero down
+                newPosition = hero.moveDown(); // Get new position after moving down
                 break;
             case ArrowLeft:
-                hero.moveLeft(); // Move hero left
+                newPosition = hero.moveLeft(); // Get new position after moving left
                 break;
             case ArrowRight:
-                hero.moveRight(); // Move hero right
+                newPosition = hero.moveRight(); // Get new position after moving right
                 break;
             case Character:
                 if (key.getCharacter() == 'q') {
@@ -59,16 +60,24 @@ public class Game {
             default:
                 break;
         }
+
+        // Move the hero to the new position
+        moveHero(newPosition);
     }
 
-    // Draw the hero on the screen
+    // Method to move the hero to the new position
+    private void moveHero(Position newPosition) {
+        // Update the hero's position
+        hero.getPosition().setX(newPosition.getX());
+        hero.getPosition().setY(newPosition.getY());
+    }
+
     private void draw() throws IOException {
         screen.clear(); // Clear the screen before drawing
         hero.draw(screen); // Draw the hero on the screen
         screen.refresh(); // Refresh the screen to show the updated hero position
     }
 
-    // Run the game loop
     public void run() throws IOException {
         while (!exitLoop) { // Run while exitLoop is false
             draw(); // Draw the hero on the screen
@@ -77,12 +86,12 @@ public class Game {
             processKey(keyStroke); // Process the key stroke
         }
 
-        // Close the screen after exiting the loop
         try {
             screen.close(); // Close the screen to clean up resources
         } catch (IOException e) {
             e.printStackTrace(); // Handle any IO exceptions on closing
         }
 
+        System.out.println("Game exited."); // Print exit message
     }
 }

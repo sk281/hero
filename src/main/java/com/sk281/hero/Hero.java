@@ -5,55 +5,41 @@ import com.googlecode.lanterna.screen.Screen;
 import java.io.IOException;
 
 public class Hero {
-    private int x; // X position
-    private int y; // Y position
+    private Position position; // Position of the hero
 
     // Constructor to initialize position
-    public Hero(int posx, int posy) {
-        this.x = posx;
-        this.y = posy;
+    public Hero(int x, int y) {
+        this.position = new Position(x, y);
     }
 
-    // Getter for X position
-    public int getX() {
-        return x;
+    // Getter for Position
+    public Position getPosition() {
+        return position;
     }
 
-    // Setter for X position
-    public void setX(int x) {
-        this.x = x;
+    // Method to move the hero up and return the new position
+    public Position moveUp() {
+        return new Position(position.getX(), position.getY() - 1); // Return new position
     }
 
-    // Getter for Y position
-    public int getY() {
-        return y;
+    // Method to move the hero down and return the new position
+    public Position moveDown() {
+        return new Position(position.getX(), position.getY() + 1); // Return new position
     }
 
-    // Setter for Y position
-    public void setY(int y) {
-        this.y = y;
+    // Method to move the hero left and return the new position
+    public Position moveLeft() {
+        return new Position(position.getX() - 1, position.getY()); // Return new position
     }
 
-    // Movement methods
-    public void moveUp() {
-        y--; // Move up
-    }
-
-    public void moveDown() {
-        y++; // Move down
-    }
-
-    public void moveLeft() {
-        x--; // Move left
-    }
-
-    public void moveRight() {
-        x++; // Move right
+    // Method to move the hero right and return the new position
+    public Position moveRight() {
+        return new Position(position.getX() + 1, position.getY()); // Return new position
     }
 
     // Method to draw the hero on the given screen
     public void draw(Screen screen) throws IOException {
         // Draw 'X' at the hero's position using TextCharacter
-        screen.setCharacter(x, y, TextCharacter.fromCharacter('X')[0]);
+        screen.setCharacter(position.getX(), position.getY(), TextCharacter.fromCharacter('X')[0]);
     }
 }
