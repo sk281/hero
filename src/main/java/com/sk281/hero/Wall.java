@@ -20,6 +20,7 @@ public class Wall {
     }
 
 
+
     public void draw(Screen screen) throws IOException {
         // Draw 'X' at the hero's position using TextCharacter
         screen.setCharacter(position.getX(), position.getY(), TextCharacter.fromCharacter('O')[0]);
