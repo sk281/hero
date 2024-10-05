@@ -37,7 +37,10 @@ public class Hero {
         return new Position(position.getX() + 1, position.getY()); // Return new position
     }
 
-    // Method to draw the hero on the given screen
+
+    public void setPosition(Position newPosition) {
+        this.position = newPosition;
+    }
     public void draw(Screen screen) throws IOException {
         // Draw 'X' at the hero's position using TextCharacter
         screen.setCharacter(position.getX(), position.getY(), TextCharacter.fromCharacter('X')[0]);
