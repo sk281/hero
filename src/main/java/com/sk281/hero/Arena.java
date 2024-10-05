@@ -8,6 +8,8 @@ import com.googlecode.lanterna.TerminalPosition; // Import TerminalPosition
 import com.googlecode.lanterna.TerminalSize; // Import TerminalSize
 import com.googlecode.lanterna.TextColor; // Import TextColor
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.googlecode.lanterna.input.KeyType.*;
 
@@ -16,12 +18,27 @@ public class Arena {
     private int height;
     private Hero hero;
     public int loop = 0;
-
+    private List<Wall> walls;
+    
     // Constructor for Arena, initializing Hero within Arena
     public Arena(int width, int height) {
         this.width = width;
         this.height = height;
         this.hero = new Hero(10, 10); // Initial position of hero
+        this.walls = createWalls();
+    }
+
+    private List<Wall> createWalls() {
+        List<Wall> walls = new ArrayList<>();
+        for (int c = 0; c < width; c++) {
+            walls.add(new Wall(c, 0));
+            walls.add(new Wall(c, height - 1));
+        }
+        for (int r = 1; r < height - 1; r++) {
+            walls.add(new Wall(0, r));
+            walls.add(new Wall(width - 1, r));
+        }
+        return walls;
     }
 
     // Check if a position is within the arena bounds
@@ -69,5 +86,7 @@ public class Arena {
         graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(width, height), ' '); // Fill rectangle
 
         hero.draw(screen); // Draw the hero
+        for (Wall wall : walls)
+            wall.draw(screen);
     }
 }
