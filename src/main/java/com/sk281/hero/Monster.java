@@ -7,13 +7,14 @@ import java.util.Random;
 
 
 public class Monster extends Element {
-    // Constructor to initialize position
+
     public Monster(int x, int y) {
-        super(x, y); // Call the constructor of the Element class
+        super(x, y);
     }
 
-    // Move the hero up and return the new position
+
     public Position moveUp() {
+
         return new Position(position.getX(), position.getY() - 1); // Return new position
     }
 
@@ -40,7 +41,7 @@ public class Monster extends Element {
 
     @Override
     public void draw(Screen screen) throws IOException {
-        // Draw 'X' at the hero's position using TextCharacter
+
         screen.setCharacter(position.getX(), position.getY(), TextCharacter.fromCharacter('W')[0]);
     }
 

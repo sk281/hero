@@ -20,7 +20,7 @@ public class Arena {
     private List<Coin> coins;
     private Monster monster ;
 
-    // Constructor for Arena, initializing Hero within Arena
+
     public Arena(int width, int height) {
         this.width = width;
         this.height = height;
@@ -50,25 +50,23 @@ public class Arena {
                     random.nextInt(height - 2) + 1));
         return coins;
     }
-    // Check if a position is within the arena bounds and not colliding with walls
-    // Check if a position is within the arena bounds and not colliding with walls
-    // Check if a position is within the arena bounds and not colliding with walls
+
     private boolean canHeroMove(Position position) {
-        // Check if the position is within the arena bounds
+
         if (position.getX() < 0 || position.getX() >= width || position.getY() < 0 || position.getY() >= height) {
             return false; // Out of bounds
         }
 
-        // Check if the position collides with any wall
+
         for (Wall wall : walls) {
             if (wall.getPosition().equals(position)) {
-                System.out.println("Can't move here: Collision with wall at " + position);
-                return false; // Collision with wall
+
+                return false;
             }
         }
 
-        // If no collision, it's a valid move
-        return true; // Valid move
+
+        return true;
     }
 
     private void retrieveCoins() {
@@ -76,8 +74,8 @@ public class Arena {
 
             if (coins.get(i).getPosition().equals(hero.getPosition())) {
 
-                coins.remove(i); // Remove the coin
-                break; // Exit after collecting one coin
+                coins.remove(i);
+                break;
             }
         }
     }
@@ -106,7 +104,7 @@ public class Arena {
             case ArrowRight -> newPosition = hero.moveRight();
             case Character -> {
                 if (key.getCharacter() == 'q') {
-                    loop = 1; // Exit loop when 'q' is pressed
+                    this.loop = 1; // Exit loop when 'q' is pressed
                     return; // Exit method without moving the hero
                 }
             }
